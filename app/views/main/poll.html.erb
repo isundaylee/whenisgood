@@ -22,7 +22,7 @@
         <% h = (100.0 * c / Response.count).to_i %>
     <% end %>
 
-    <div class="day <%= "hidden" unless d %>" data-date="<%= date %>">
+    <div class="day <%= "hidden" unless d %> <%= "chooseable" unless success %>" data-date="<%= date %>">
         <p class="name">&nbsp; <%= d.try(:strftime, "%m/%d") %>&nbsp;</p>
         <p class="result">&nbsp; <%= "Works for #{c}" if d %>&nbsp;</p>
         <div style="height: <%= "#{h}%" %>; ">&nbsp; </div>
