@@ -1,0 +1,43 @@
+<% success = params[:success] %>
+
+<% if success %>
+    <h1>You've successfully submitted the response ;) </h1>
+<% else %>
+    <h1>Click on the days that work for you</h1>
+<% end %>
+
+<% days = [nil] * (@st.wday - 1) + (@st .. @ed).to_a %>
+
+<% i = 0 %>
+
+<% days.each do |d| %>
+
+    <% i += 1 %>
+    <% date = "2016-%02d-%02d" % [d.month, d.day] if d %>
+    <% c = @responses.count(date) %>
+
+    <% if Response.count == 0 %>
+        <% h = 0 %>
+    <% else %>
+        <% h = (100.0 * c / Response.count).to_i %>
+    <% end %>
+
+    <div class="day <%= "hidden" unless d %>" data-date="<%= date %>">
+        <p class="name">&nbsp; <%= d.try(:strftime, "%m/%d") %>&nbsp;</p>
+        <p class="result">&nbsp; <%= "Works for #{c}" if d %>&nbsp;</p>
+        <div style="height: <%= "#{h}%" %>; ">&nbsp; </div>
+    </div>
+
+    <% if i % 7 == 0 %>
+        <br>
+    <% end %>
+
+<% end %>
+
+<% unless success %>
+    <%= form_for Response.new do |f| %>
+        <%= f.hidden_field :content %>
+        <%= f.submit "Submit" %>
+    <% end %>
+<% end %>
+
